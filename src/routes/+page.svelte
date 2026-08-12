@@ -4,7 +4,7 @@
 </svelte:head>
 
 <script lang="ts">
-  const smsUrl = 'sms:+16045515660?body=Hi%20TannerBot%2C%20who%20are%20you%3F';
+  const appleUrl = 'https://bcrw.apple.com/urn:biz:76d21f9c-3f2b-42e4-b939-d33120af21e8';
 </script>
 
 <main>
@@ -13,7 +13,7 @@
     <p class="eyebrow">Always ready to chat</p>
     <h1 id="title">TannerBot</h1>
     <p class="intro">A little help, a quick answer, or a friendly conversation — just a text away.</p>
-    <a class="button" href={smsUrl}>Try Now <span aria-hidden="true">→</span></a>
+    <a class="button" href={appleUrl}>Try Now <span aria-hidden="true">→</span></a>
   </section>
 </main>
 
