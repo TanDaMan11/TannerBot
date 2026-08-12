@@ -104,6 +104,11 @@ async function sendSinchReply(
   const accessKey = process.env.SINCH_ACCESS_KEY?.trim() as string;
   const accessKeySecret = process.env.SINCH_ACCESS_KEY_SECRET?.trim() as string;
   const authorization = Buffer.from(`${accessKey}:${accessKeySecret}`, "utf8").toString("base64");
+  let outboundChannel = channel;
+  const upperChannel = channel.toUpperCase();
+  if (upperChannel.includes("APPLE") || upperChannel.includes("BUSINESS") || upperChannel.includes("BC")) {
+    outboundChannel = "APPLEBC";
+  }
 
   const response = await fetch(
     `https://us.conversation.api.sinch.com/v1/projects/${encodeURIComponent(projectId)}/messages:send`,
@@ -117,7 +122,7 @@ async function sendSinchReply(
         app_id: appId,
         recipient: {
           identified_by: {
-            channel_identities: [{ channel, identity }]
+            channel_identities: [{ channel: outboundChannel, identity }]
           }
         },
         message: { text_message: { text } }
