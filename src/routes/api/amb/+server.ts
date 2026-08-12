@@ -37,6 +37,30 @@ function getBotReply(text: string): string {
   return DEFAULT_REPLY;
 }
 
+function summarizeSinchEnvValue(value: string | undefined): {
+  exists: boolean;
+  length: number;
+  first3: string;
+  last3: string;
+} {
+  const trimmed = value?.trim() ?? "";
+  return {
+    exists: Boolean(trimmed),
+    length: trimmed.length,
+    first3: trimmed.length >= 3 ? trimmed.slice(0, 3) : "short",
+    last3: trimmed.length >= 3 ? trimmed.slice(-3) : "short"
+  };
+}
+
+function logSinchEnvDiagnostics(): void {
+  console.info("[amb] Sinch environment diagnostics", {
+    SINCH_PROJECT_ID: summarizeSinchEnvValue(process.env.SINCH_PROJECT_ID),
+    SINCH_APP_ID: summarizeSinchEnvValue(process.env.SINCH_APP_ID),
+    SINCH_ACCESS_KEY: summarizeSinchEnvValue(process.env.SINCH_ACCESS_KEY),
+    SINCH_ACCESS_KEY_SECRET: summarizeSinchEnvValue(process.env.SINCH_ACCESS_KEY_SECRET)
+  });
+}
+
 function hasSinchCredentials(): boolean {
   return Boolean(
     process.env.SINCH_PROJECT_ID?.trim() &&
@@ -128,6 +152,7 @@ export const POST = async ({ request }: RequestEvent): Promise<Response> => {
   const botReply = getBotReply(incoming);
 
   if (isSinch) {
+    logSinchEnvDiagnostics();
     console.info("[amb] Extracted Sinch inbound message", {
       text: incoming,
       identity: sinch.identity,
