@@ -8,7 +8,7 @@ const DEFAULT_REPLY =
   "Text Tanner Scarlett to check in on his reading and let him know if the game is ready.";
 
 function asObject(value: unknown): JsonObject | undefined {
-  return typeof value === "object" && value !== null && !Array.isArray(value)
+  return typeof value === "object' && value !== null && !Array.isArray(value)
     ? (value as JsonObject)
     : undefined;
 }
@@ -39,10 +39,10 @@ function getBotReply(text: string): string {
 
 function hasSinchCredentials(): boolean {
   return Boolean(
-    process.env.SINCH_PROJECT_ID &&
-      process.env.SINCH_APP_ID &&
-      process.env.SINCH_ACCESS_KEY &&
-      process.env.SINCH_ACCESS_KEY_SECRET
+    process.env.SINCH_PROJECT_ID?.trim() &&
+      process.env.SINCH_APP_ID?.trim() &&
+      process.env.SINCH_ACCESS_KEY?.trim() &&
+      process.env.SINCH_ACCESS_KEY_SECRET?.trim()
   );
 }
 
@@ -75,11 +75,11 @@ async function sendSinchReply(
   channel: string,
   text: string
 ): Promise<void> {
-  const projectId = process.env.SINCH_PROJECT_ID as string;
-  const appId = process.env.SINCH_APP_ID as string;
-  const accessKey = process.env.SINCH_ACCESS_KEY as string;
-  const accessKeySecret = process.env.SINCH_ACCESS_KEY_SECRET as string;
-  const authorization = btoa(`${accessKey}:${accessKeySecret}`);
+  const projectId = process.env.SINCH_PROJECT_ID?.trim() as string;
+  const appId = process.env.SINCH_APP_ID?.trim() as string;
+  const accessKey = process.env.SINCH_ACCESS_KEY?.trim() as string;
+  const accessKeySecret = process.env.SINCH_ACCESS_KEY_SECRET?.trim() as string;
+  const authorization = Buffer.from(`${accessKey}:${accessKeySecret}`, "utf8").toString("base64");
 
   const response = await fetch(
     `https://us.conversation.api.sinch.com/v1/projects/${encodeURIComponent(projectId)}/messages:send`,
