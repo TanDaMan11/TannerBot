@@ -8,7 +8,7 @@ const DEFAULT_REPLY =
   "Text Tanner Scarlett to check in on his reading and let him know if the game is ready.";
 
 function asObject(value: unknown): JsonObject | undefined {
-  return typeof value === "object' && value !== null && !Array.isArray(value)
+  return typeof value === "object" && value !== null && !Array.isArray(value)
     ? (value as JsonObject)
     : undefined;
 }
